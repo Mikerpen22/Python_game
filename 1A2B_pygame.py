@@ -13,7 +13,6 @@ screen = pygame.display.set_mode((display_w, display_h))
 pygame.display.set_caption('1A2B')
 clock= pygame.time.Clock()
 
-
 def message_display(text_str, center_x, center_y):  # Pass in text_str and where to set the text's center
     font = pygame.font.SysFont('arial bold', 100)  # create a font object
     text_block = font.render(text_str, False, black)  # render text_str with the font
