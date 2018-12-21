@@ -8,27 +8,48 @@ answer = ""
 playerGuess = ""
 nOfDigits = 4
 
-class StartPage(Frame):
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.master = master
+class numbergame(Tk):
+    def __init__(self,*args,**kwargs):
+        Tk.__init__(self,*args,**kwargs)
+        container = Frame(self)
 
-        image = Image.open('2b.jpg')
+        container.grid()
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+
+        for F in (StartPage, mainWin):
+            frame = F(container , self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky=NSEW)
+        self.show_frame(StartPage)
+
+    def show_frame(self,cont):
+        frame = self.frames[cont]
+        frame.tkraise()
+
+
+
+class StartPage(Frame):
+    def __init__(self, parent,controller):
+        Frame.__init__(self, parent)
+
+        image = Image.open('C:\\Users\\carl_dis2003\\Desktop\\大學\\大三上\\python\\2b.jpg')
         self.bg_load = ImageTk.PhotoImage(image)  # Add self or image will be garbage collected
         bg_label = Label(self, image=self.bg_load)
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        but_go = Button(bg_label, height=4, width=8, text='Come on!', command=lambda: show_frame(mainWin))
+        but_go = Button(bg_label, height=4, width=8, text='Come on!', command=lambda: controller.show_frame(mainWin))
         but_go.pack(side=BOTTOM)
 
 class mainWin(Frame):
 
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.master = master
-        self.grid(padx=2, pady=2)
+    def __init__(self, parent,controller):
+        Frame.__init__(self, parent)
+        self.grid()
 
-        load_1 = Image.open('reenter.png')
+        load_1 = Image.open('C:\\Users\\carl_dis2003\\Desktop\\大學\\大三上\\python\\reenter.png')
         self.reenter_img = ImageTk.PhotoImage(load_1)
 
         self.setUpWidgets()
@@ -126,6 +147,10 @@ class mainWin(Frame):
         def clickBut0():
             label.configure(text=label.cget("text") + "0")
 
+        def clickButBack():
+            str = label.cget("text")
+            label.configure(text=str[0:-1])
+
         resultLabel = Label(self, text="0A0B", font=('arial', 20))
         var = StringVar(self)
 
@@ -143,7 +168,8 @@ class mainWin(Frame):
         Btn7 = Button(self, text="7", command=clickBut7, height=3, width=6)
         Btn8 = Button(self, text="8", command=clickBut8, height=3, width=6)
         Btn9 = Button(self, text="9", command=clickBut9, height=3, width=6)
-        Btn0 = Button(self, text="0", command=clickBut0, height=4, width=19)
+        Btn0 = Button(self, text="0", command=clickBut0, height=4, width=14)
+        BtnBack = Button(self, text="←", command=clickButBack, height=4, width=6)
 
         Btn1.grid(row=2, column=0)
         Btn2.grid(row=2, column=1)
@@ -154,9 +180,10 @@ class mainWin(Frame):
         Btn7.grid(row=4, column=0)
         Btn8.grid(row=4, column=1)
         Btn9.grid(row=4, column=2, sticky="w")
-        Btn0.grid(row=5, column=0, columnspan=3, sticky="w")
+        Btn0.grid(row=5, column=0, columnspan=2, sticky="w")
+        BtnBack.grid(row=5, column=2, sticky="e")
 
-        answers = Text(self, width=25, height=8, bg='black', foreground='yellow')
+        answers = Text(self, width=20, height=8, bg='black', foreground='yellow')
         answers.grid(row=4, column=4, rowspan=4, pady=2)
 
         label.grid(row=0, column=0, columnspan=3, sticky=W)
@@ -167,30 +194,5 @@ class mainWin(Frame):
 
         newGame()
 
-
-# Pass in specific "class" and have it show the frame corresponding to it
-def show_frame(cont):
-    frame = container.frames[cont]
-    frame.tkraise()
-
-
-root = Tk()
-root.geometry('361x335')
-root.title('1A2B')
-container = Frame(root)   # create a Container frame that contains multiple frames
-container.grid()
-container.grid_rowconfigure(0, weight=1)
-container.grid_columnconfigure(0,weight=1)
-
-container.frames = {}  # Create a dictionary to store frames
-
-# Loop through custom frames to set up container dict
-for F in (StartPage, mainWin):
-    frame = F(container)  # init the custom frame and tell it that the master is container frame
-    container.frames[F] = frame  # Add to container.frames dictionary \ {class: frame}
-    frame.grid(row=0, column=0, sticky=NSEW)  # Organize each frame to fit screen
-
-
-show_frame(StartPage)
-
-root.mainloop( )
+app = numbergame()
+app.mainloop()
