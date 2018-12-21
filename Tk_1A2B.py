@@ -8,10 +8,9 @@ answer = ""
 playerGuess = ""
 nOfDigits = 4
 
-
 class numbergame(Tk):
-    def __init__(self, *args, **kwargs):
-        Tk.__init__(self, *args, **kwargs)
+    def __init__(self,*args,**kwargs):
+        Tk.__init__(self,*args,**kwargs)
         container = Frame(self)
 
         container.grid()
@@ -21,18 +20,19 @@ class numbergame(Tk):
         self.frames = {}
 
         for F in (StartPage, mainWin):
-            frame = F(container, self)
+            frame = F(container , self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky=NSEW)
         self.show_frame(StartPage)
 
-    def show_frame(self, cont):
+    def show_frame(self,cont):
         frame = self.frames[cont]
         frame.tkraise()
 
 
+
 class StartPage(Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent,controller):
         Frame.__init__(self, parent)
 
         image = Image.open('2b.jpg')
@@ -43,10 +43,9 @@ class StartPage(Frame):
         but_go = Button(bg_label, height=4, width=8, text='Come on!', command=lambda: controller.show_frame(mainWin))
         but_go.pack(side=BOTTOM)
 
-
 class mainWin(Frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent,controller):
         Frame.__init__(self, parent)
         self.grid()
 
