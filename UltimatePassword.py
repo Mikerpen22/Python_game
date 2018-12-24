@@ -10,17 +10,16 @@ class UltimatePasswordGameWindow(tk.Frame):
         # filename =  tk.PhotoImage(file="C:\\Users\\frank\\PycharmProjects\\PythonCourse\\Lily_Project\\green.gif")
         # self.bg_label = tk.Label(self, image=filename)
         # self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-        # 尚未試成功的code
-        # photo = tk.PhotoImage(file="C:\\Users\\frank\\PycharmProjects\\PythonCourse\\Lily_Project\\green.gif")
-        # self.theLabel = tk.Label(self.master,text = "我是内容,\n请你阅读",justify = tk.LEFT,image = photo,compound = tk.CENTER,font = ("华文行楷", 20),fg = "white")  # 前景色
-        # self.theLabel.place(x=0, y=0, relwidth=1, relheight=1)
 
+        # 視窗的Title
         self.master.title('UltimatePasswordGame')
 
+        # 變數初始化
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
         self.guess_count_limit = guess_count_limit
         self.guess_count = 0
+
         self.grid()
 
         self.answer = randint(lower_bound, upper_bound)
@@ -29,7 +28,12 @@ class UltimatePasswordGameWindow(tk.Frame):
         init_text = u'有' + str(guess_count_limit) + u'次機會,猜一個數字, 數字介於' + str(lower_bound) + u'至' + str(upper_bound) + u'之間\n若猜錯, 會給予提示\n'  + \
                     '請輸入一個介於 ' + str(lower_bound) + '-' + str(upper_bound) + ' 之間的整數\n'
 
-        self.lb = tk.Label(self, height=4, width=50, text=init_text)
+        photo = tk.PhotoImage(file="green.gif")
+
+        self.lb = tk.Label(self, text = init_text,justify = tk.LEFT,image = photo,compound = tk.CENTER,font = ("华文行楷", 10),fg = "white")  # 前景色
+        self.lb.place(x=0, y=0, relwidth=1, relheight=1)
+
+        #self.lb = tk.Label(self, height=4, width=50, text=init_text)
         #self.lb.pack()
         self.txt = tk.Text(self, height=1, width=10)
         self.txt.bind('<Return>', self.click_enter_keyboard)
@@ -121,14 +125,21 @@ class UltimatePasswordGameWindow(tk.Frame):
     # 將按鈕的事件更換
     def end_game(self):
         print('end_game')
+        # 移除文字輸入框
         self.txt.grid_remove()
+        # 將按鈕觸發的事件 改綁定為關掉視窗的funciton
         self.btn['command'] = self.end_frame
 
     # 清除與關掉此Frame
     def end_frame(self):
         print('end_frame')
+        # 把內容清空
         self.destroy()
+        # 把視窗關閉
         self.quit()
 
-window = UltimatePasswordGameWindow()
-#window2 = UltimatePasswordGameWindow()
+# 開啟終極密碼遊戲,  遊戲結束時, 會自行關閉
+UltimatePasswordGameWindow()
+
+# 關閉後 再開啟另一個遊戲 (先以再次開啟 同樣遊戲為例)
+# UltimatePasswordGameWindow()
