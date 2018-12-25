@@ -3,7 +3,9 @@ import tkinter.font as tkFont
 import random
 from PIL import Image
 from PIL import ImageTk
-import tkinter.messagebox
+
+
+
 
 class CompareGame(tk.Frame):
 
@@ -70,15 +72,14 @@ class CompareGame(tk.Frame):
     isBig = 51 <= result <= 100
     if self.times == 0:
       if self.scores >=3:
-        quit = tk.messagebox.showinfo("遊戲結束","猜對%d次，闖關成功" %self.scores)
-        if quit == "ok":
-            self.master.destroy()
+        self.master.destroy()
+        game_win().master.geometry("425x300+100+100")
+
 
       else: 
-        quit = tk.messagebox.showinfo("遊戲結束","猜對%d次，闖關失敗" %self.scores)
-        
-        if quit == "ok":
-            self.master.destroy()
+        self.master.destroy()
+        game_loss().master.geometry("490x300+100+100")
+
         
          
 
@@ -98,14 +99,14 @@ class CompareGame(tk.Frame):
     isSmall = 1 <= result <= 50
     if self.times == 0:
       if self.scores >=3:
-        quit = tk.messagebox.showinfo("遊戲結束","猜對%d次，闖關成功" %self.scores)        
-        if quit == "ok":
-            self.master.destroy()
+        self.master.destroy()
+        game_win().master.geometry("425x300+100+100")
+ 
       else: 
-        quit = tk.messagebox.showinfo("遊戲結束","猜對%d次，闖關失敗" %self.scores)
-        print(quit)
-        if quit == "ok":
-            self.master.destroy()
+          self.master.destroy()     
+          game_loss().master.geometry("490x300+100+100")
+  
+          
              
     
     if isSmall:
@@ -116,12 +117,65 @@ class CompareGame(tk.Frame):
       result_str.set('很遺憾，你猜錯了')
 
 
+class game_loss(tk.Frame):
 
+  def __init__(self):
+    tk.Frame.__init__(self) 
+    self.grid()
+    self.createWidgets()
+
+  def createWidgets(self):
+    f1 = tkFont.Font(size = 32, family = "微軟正黑體")
+    f2 = tkFont.Font(size = 24, family = "微軟正黑體")
+    f3 = tkFont.Font(size = 18, family = "微軟正黑體")
+
+
+    self.label1 = tk.Label(self, text ="遊戲結束",font = f1)
+    self.label2 = tk.Label(self,text = " 沒有獲得超過3個鑽石，闖關失敗" , font = f2)
+    self.btn1 = tk.Button(self, text = "退出遊戲", height = 2, width = 8,command = self.clickBtn1, font = f2) 
+    self.btn2 = tk.Button(self, text = "再試一次", height = 2, width = 8,command = self.clickBtn2, font = f2)
+    self.label1.grid(row = 3,column = 3,columnspan = 6)
+    self.label2.grid(row = 5,column = 3,columnspan = 6)
+    self.btn1.grid(row = 9, column = 0, columnspan = 6)
+    self.btn2.grid(row = 9, column = 6, columnspan = 6)
+ 
+    
+  def clickBtn1(self):
+      self.master.destroy()
+      
+
+  def clickBtn2(self):
+      self.master.destroy()
+      CompareGame().master.geometry("320x300+100+100")
+
+class game_win(tk.Frame):
+
+  def __init__(self):
+    tk.Frame.__init__(self) 
+    self.grid()
+    self.createWidgets()
+
+  def createWidgets(self):
+    f1 = tkFont.Font(size = 32, family = "微軟正黑體")
+    f2 = tkFont.Font(size = 24, family = "微軟正黑體")
+    f3 = tkFont.Font(size = 18, family = "微軟正黑體")
+
+    self.label1 = tk.Label(self, text ="遊戲結束",font = f1)
+    self.label2 = tk.Label(self,text = " 獲得超過3個鑽石，闖關成功", font = f2)
+    self.btn1 = tk.Button(self, text = "退出遊戲", height = 2, width = 8,command = self.clickBtn1, font = f2) 
+    
+    self.label1.grid(row = 3,column = 3,columnspan = 6)
+    self.label2.grid(row = 5,column = 3,columnspan = 6)
+    self.btn1.grid(row = 9, column = 3, columnspan = 6)
+
+ 
+    
+  def clickBtn1(self):
+      self.master.destroy()
+      
 
 
 cg = CompareGame()
 cg.master.title("猜大小")
+cg.master.geometry("320x300+100+100")
 cg.mainloop()
-print(quit)
-#if quit == "ok":
-#    cg.destory()
