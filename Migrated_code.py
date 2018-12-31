@@ -480,14 +480,13 @@ class Game3MainPage(Frame):
 
     def check_guess(self):
         self.playerGuess = self.label.cget("text")
-
         if len(self.playerGuess) == self.nOfDigits:
             self.count = self.count - 1
             a = self.cal_a(self.playerGuess)
             b = self.cal_b(self.playerGuess)
             self.show_result(a, b)
             self.label.config(text="")
-            self.answers.insert(INSERT, self.playerGuess + "   " + str(a) + "A" + str(b) + "B" + "\n")
+            self.answers.insert(INSERT,self.playerGuess + "   " + str(a) + "A" + str(b) + "B" + "\n")
             self.chanceLabel.config(text=str(self.count)+" chances left")
 
         else:
@@ -562,23 +561,24 @@ class Game3MainPage(Frame):
         self.label.configure(text=s[0:-1])
 
     def setup_widgets(self):
-        self.resultLabel = Label(self, text="0A0B", font=('arial', 20))
-        self.guessBtn = Button(self, text="Guess", command=self.check_guess, height=3, width=20)
-        self.new_gameBtn = Button(self, text="New Game", command=self.new_game, height=3, width=20)
-        self.chanceLabel = Label(self, height=1, borderwidth=5, text="10 chances left", font=('arial', 12))
+        self.resultLabel = Label(self, text="0A0B", font=('arial', 28),height=2)
+        self.guessBtn = Button(self, text="Guess", command=self.check_guess, height=4, width=20)
+        self.new_gameBtn = Button(self, text="New Game", command=self.new_game, height=4, width=20)
+        self.Back_Main = Button(self, text="Back To Main Menu", command=lambda: self.controller.show_frame(DoorPage), height=4, width=20)
+        self.chanceLabel = Label(self, height=2, borderwidth=5, text="10 chances left", font=('arial', 18))
 
-        self.label = Label(self, height=1, borderwidth=5, text="", font=('arial', 20))
-        self.btn_1 = Button(self, text="1", command=self.click_but1, height=3, width=6)
-        self.btn_2 = Button(self, text="2", command=self.click_but2, height=3, width=6)
-        self.btn_3 = Button(self, text="3", command=self.click_but3, height=3, width=6)
-        self.btn_4 = Button(self, text="4", command=self.click_but4, height=3, width=6)
-        self.btn_5 = Button(self, text="5", command=self.click_but5, height=3, width=6)
-        self.btn_6 = Button(self, text="6", command=self.click_but6, height=3, width=6)
-        self.btn_7 = Button(self, text="7", command=self.click_but7, height=3, width=6)
-        self.btn_8 = Button(self, text="8", command=self.click_but8, height=3, width=6)
-        self.btn_9 = Button(self, text="9", command=self.click_but9, height=3, width=6)
-        self.btn_0 = Button(self, text="0", command=self.click_but0, height=4, width=14)
-        self.btn_back = Button(self, text="←", command=self.click_butBack, height=4, width=6)
+        self.label = Label(self, height=2, borderwidth=5, text="", font=('arial', 28))
+        self.btn_1 = Button(self, text="1", command=self.click_but1, height=4, width=8)
+        self.btn_2 = Button(self, text="2", command=self.click_but2, height=4, width=8)
+        self.btn_3 = Button(self, text="3", command=self.click_but3, height=4, width=8)
+        self.btn_4 = Button(self, text="4", command=self.click_but4, height=4, width=8)
+        self.btn_5 = Button(self, text="5", command=self.click_but5, height=4, width=8)
+        self.btn_6 = Button(self, text="6", command=self.click_but6, height=4, width=8)
+        self.btn_7 = Button(self, text="7", command=self.click_but7, height=4, width=8)
+        self.btn_8 = Button(self, text="8", command=self.click_but8, height=4, width=8)
+        self.btn_9 = Button(self, text="9", command=self.click_but9, height=4, width=8)
+        self.btn_0 = Button(self, text="0", command=self.click_but0, height=4, width=18)
+        self.btn_back = Button(self, text="←", command=self.click_butBack, height=4, width=8)
 
         self.btn_1.grid(row=3, column=0)
         self.btn_2.grid(row=3, column=1)
@@ -592,14 +592,15 @@ class Game3MainPage(Frame):
         self.btn_0.grid(row=6, column=0, columnspan=2, sticky="w")
         self.btn_back.grid(row=6, column=2, sticky="e")
 
-        self.answers = Text(self, width=20, height=8, bg='black', foreground='yellow')
-        self.answers.grid(row=5, column=4, rowspan=4, pady=2)
+        self.answers = Text(self, width=20, height=12, bg='black', foreground='yellow',font=('arial', 15))
+        self.answers.grid(row=3, column=5, rowspan=4,pady=4,padx=10)
 
-        self.label.grid(row=1, column=0, columnspan=3, sticky=W)
-        self.chanceLabel.grid(row=0, column=0, columnspan=3, sticky=W)
-        self.resultLabel.grid(row=1, column=4)
+        self.label.grid(row=0, column=0, columnspan=3,rowspan=3)
+        self.chanceLabel.grid(row=0, column=5, columnspan=3,rowspan=3)
+        self.resultLabel.grid(row=0, column=4,rowspan=3)
         self.guessBtn.grid(row=3, column=4)
         self.new_gameBtn.grid(row=4, column=4)
+        self.Back_Main.grid(row=5, column=4)
 
         self.new_game()
 
