@@ -65,7 +65,7 @@ class TreasureHunter(Tk):
 class BeginningPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600, height=400)
-        image = Image.open('beginning.png')
+        image = Image.open('beginning_with_description.png')
         image = image.resize((860, 620), Image.ANTIALIAS)
         self.bg_load = ImageTk.PhotoImage(image)
         bg_label = Label(self, image=self.bg_load)
@@ -84,20 +84,30 @@ class DoorPage(Frame):
         global game3_pass
         self.config(bg='grey9')
         # Load the initial Locked doors
+
+        locked_image_width = 200
+        locked_image_height = 430
+
+        unlocked_image_width = locked_image_width
+        unlocked_image_height = locked_image_height
+
+        door_button_width = locked_image_width
+        door_button_height = locked_image_height
+
         self.image1 = Image.open('door_left_locked.png')
-        self.image1 = self.image1.resize((250, 430), Image.ANTIALIAS)
+        self.image1 = self.image1.resize((locked_image_width, locked_image_height), Image.ANTIALIAS)
         self.image2 = Image.open('door_mid_locked.png')
-        self.image2 = self.image2.resize((250, 430), Image.ANTIALIAS)
+        self.image2 = self.image2.resize((locked_image_width, locked_image_height), Image.ANTIALIAS)
         self.image3 = Image.open('door_right_locked.png')
-        self.image3 = self.image3.resize((250, 430), Image.ANTIALIAS)
+        self.image3 = self.image3.resize((locked_image_width, locked_image_height), Image.ANTIALIAS)
 
         # Load the initial unlocked doors
         self.image1_unlock = Image.open('door_left_unlocked.png')
-        self.image1_unlock = self.image1_unlock.resize((250, 400), Image.ANTIALIAS)
+        self.image1_unlock = self.image1_unlock.resize((unlocked_image_width, unlocked_image_height), Image.ANTIALIAS)
         self.image2_unlock = Image.open('door_mid_unlocked.png')
-        self.image2_unlock = self.image2_unlock.resize((250, 400), Image.ANTIALIAS)
+        self.image2_unlock = self.image2_unlock.resize((unlocked_image_width, unlocked_image_height), Image.ANTIALIAS)
         self.image3_unlock = Image.open('door_right_unlocked.png')
-        self.image3_unlock = self.image3_unlock.resize((250, 400), Image.ANTIALIAS)
+        self.image3_unlock = self.image3_unlock.resize((unlocked_image_width, unlocked_image_height), Image.ANTIALIAS)
 
         self.bg1_load = ImageTk.PhotoImage(self.image1)  # Add self or image will be garbage collected
         self.bg2_load = ImageTk.PhotoImage(self.image2)
@@ -106,9 +116,9 @@ class DoorPage(Frame):
         self.bg2_unlock_load = ImageTk.PhotoImage(self.image2_unlock)
         self.bg3_unlock_load = ImageTk.PhotoImage(self.image3_unlock)
 
-        self.bg1 = Button(self, width=250, height=400, image=self.bg1_load, command=lambda: controller.show_frame(Game1IntroPage), borderwidth=0, highlightthickness=0)
-        self.bg2 = Button(self, width=250, height=400, image=self.bg2_load, command=lambda: controller.show_frame(Game2IntroPage), borderwidth=0, highlightthickness=0)
-        self.bg3 = Button(self, width=250, height=400, image=self.bg3_load, command=lambda: controller.show_frame(Game3IntroPage), borderwidth=0, highlightthickness=0)
+        self.bg1 = Button(self, width=door_button_width, height=door_button_height, image=self.bg1_load, command=lambda: controller.show_frame(Game1IntroPage), borderwidth=0, highlightthickness=0)
+        self.bg2 = Button(self, width=door_button_width, height=door_button_height, image=self.bg2_load, command=lambda: controller.show_frame(Game2IntroPage), borderwidth=0, highlightthickness=0)
+        self.bg3 = Button(self, width=door_button_width, height=door_button_height, image=self.bg3_load, command=lambda: controller.show_frame(Game3IntroPage), borderwidth=0, highlightthickness=0)
         self.bg2.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.bg1.pack(side=LEFT)
         self.bg3.pack(side=RIGHT)
@@ -131,11 +141,11 @@ class Game1IntroPage(Frame):
     def createWidgets(self):
         label1 = Label(self, text="歡迎來到猜大小遊戲", font=('微軟正黑體', 30), bg='black', fg='white')
         label2 = Label(self, text="規則說明:", font=('微軟正黑體', 24))
-        label3 = Label(self, text="每一回合，系統會產生一個數字(1-100)", font=('微軟正黑體', 18))
+        label3 = Label(self, text="每一回合，系統會產生一個數字(1-100)，", font=('微軟正黑體', 18))
         label4 = Label(self, text="要去猜此數字是大(51以上)，", font=('微軟正黑體', 18))
-        label5 = Label(self, text="還是小(50以下)", font=('微軟正黑體', 18))
+        label5 = Label(self, text="還是小(50以下)，", font=('微軟正黑體', 18))
         label6 = Label(self, text="在五個回合中猜中三個回合即算成功", font=('微軟正黑體', 18))
-        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game1MainPage),
+        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game1MainPage), bg='black', foreground='white',
                       font=('微軟正黑體', 24))
 
         label1.pack(side="top", fill="both", expand=True)
@@ -152,24 +162,9 @@ class Game1MainPage(Frame):
         Frame.__init__(self, parent, width=600, height=600)
         self.controller = controller
 
-        self.times = 5
-        self.scores = 0
-        self.display_count = 0
-
-        # Background
-        self.imageHeart = Image.open("heartx.png")
-        self.imageHeart = self.imageHeart.resize((90, 45), Image.ANTIALIAS)
-        self.imageHeart = ImageTk.PhotoImage(self.imageHeart)
-        self.imageHeartLabel = Label(self, image=self.imageHeart)
-        # self.imageHeartLabel.grid(row=0, column=8, columnspan=2)
-        self.imageHeartLabel.place(relx=0.45, rely=0.1, anchor=CENTER)
-
-        self.imageDiamond = Image.open("diamond.png")
-        self.imageDiamond = self.imageDiamond.resize((90, 50), Image.ANTIALIAS)
-        self.imageDiamond = ImageTk.PhotoImage(self.imageDiamond)
-        self.imageDiamondLabel = Label(self, image=self.imageDiamond)
-        # self.imageDiamondLabel.grid(row=1, column=8, columnspan=2)
-        self.imageDiamondLabel.place(relx=0.45, rely=0.25, anchor=CENTER)
+        self.remaining_times_int = 5
+        self.accumulated_score_int = 0
+        self.raised_count = 0
 
         self.createWidgets()
 
@@ -177,113 +172,150 @@ class Game1MainPage(Frame):
         target_object.configure(text=text)
 
     def reset_if_needed(self):
-        if self.display_count == 0:
-            self.display_count += 1
+        if self.raised_count == 0:
+            self.raised_count += 1
         else:
-            self.times = 5
-            self.scores = 0
-            self.times_str.set(self.times)
-            self.scores_str.set(self.scores)
-            self.lbDisplayScores.configure(textvariable=self.times_str)
-            self.lbDisplayScores.configure(textvariable=self.scores_str)
+            self.remaining_times_int = 5
+            self.accumulated_score_int = 0
+            self.remaining_times_str.set(self.remaining_times_int)
+            self.accumulated_score_str.set(self.accumulated_score_int)
+            self.remaining_times_label.configure(textvariable=self.remaining_times_str)
+            self.accumulated_score_label.configure(textvariable=self.accumulated_score_str)
+
+            self.guess_big_button.place(relx=0.3, rely=0.7, anchor=CENTER)
+            self.guess_small_button.place(relx=0.7, rely=0.7, anchor=CENTER)
+            self.back_to_door_page_button.place_forget()
 
     def createWidgets(self):
-        self.times_str = StringVar()
-        self.scores_str = StringVar()
-        self.num_str = StringVar()
-        self.result_str = StringVar()
-        self.times_str.set(self.times)
-        self.scores_str.set(self.scores)
 
-        self.lbDisplayTimes = Label(self, height=1, width=2, textvariable=self.times_str, font=('微軟正黑體', 32))
-        self.lbDisplayScores = Label(self, height=1, width=2, textvariable=self.scores_str, font=('微軟正黑體', 32))
-        self.lbNum = Label(self, height=1, width=12, textvariable=self.num_str, font=('微軟正黑體', 32))
-        self.lbResult = Label(self, height=1, width=15, textvariable=self.result_str, font=('微軟正黑體', 18))
-        self.btnBig = Button(self, text="大", height=1, width=5, command=self.clickBtnBig, font=('微軟正黑體', 24), bg='black', foreground='yellow')
-        self.btnSmall = Button(self, text="小", height=1, width=5, command=self.clickBtnSmall, font=('微軟正黑體', 24), bg='black', foreground='yellow')
+        # Background
+        self.image_heart = Image.open("heartx.png")
+        self.image_heart = self.image_heart.resize((90, 45), Image.ANTIALIAS)
+        self.image_heart = ImageTk.PhotoImage(self.image_heart)
+        self.image_heart_label = Label(self, image=self.image_heart)
+        # self.imageHeartLabel.grid(row=0, column=8, columnspan=2)
 
-        self.lbDisplayTimes.place(relx=0.55, rely=0.1, anchor=CENTER)
-        self.lbDisplayScores.place(relx=0.55, rely=0.25, anchor=CENTER)
-        self.lbNum.place(relx=0.5, rely=0.4, anchor=CENTER)
-        self.btnBig.place(relx=0.3, rely=0.7, anchor=CENTER)
-        self.btnSmall.place(relx=0.7, rely=0.7, anchor=CENTER)
+        self.image_diamond = Image.open("diamond.png")
+        self.image_diamond = self.image_diamond.resize((90, 50), Image.ANTIALIAS)
+        self.image_diamond = ImageTk.PhotoImage(self.image_diamond)
+        self.image_diamond_label = Label(self, image=self.image_diamond)
+        # self.imageDiamondLabel.grid(row=1, column=8, columnspan=2)
+
+        self.remaining_times_str = StringVar()
+        self.accumulated_score_str = StringVar()
+        self.descirption_str = StringVar()
+
+        self.remaining_times_str.set(self.remaining_times_int)
+        self.accumulated_score_str.set(self.accumulated_score_int)
+
+        self.remaining_times_label = Label(self, height=1, width=2, textvariable=self.remaining_times_str, font=('微軟正黑體', 32))
+        self.accumulated_score_label = Label(self, height=1, width=2, textvariable=self.accumulated_score_str, font=('微軟正黑體', 32))
+        self.descirption_label = Label(self, height=1, width=50, textvariable=self.descirption_str, font=('微軟正黑體', 12))
+        self.guess_big_button = Button(self, text="大", height=1, width=5, command=self.click_guess_big_button, font=('微軟正黑體', 24), bg='black', foreground='white')
+        self.guess_small_button = Button(self, text="小", height=1, width=5, command=self.click_guess_small_button, font=('微軟正黑體', 24), bg='black', foreground='white')
+
+        self.back_to_door_page_button = Button(self, text="回到主畫面", height=1, width=15, command=self.back_to_door, font=('微軟正黑體', 24), bg='black', foreground='white')
+
+        # location
+        self.image_diamond_label.place(relx=0.43, rely=0.25, anchor=CENTER)
+        self.image_heart_label.place(relx=0.43, rely=0.1, anchor=CENTER)
+
+        self.remaining_times_label.place(relx=0.57, rely=0.1, anchor=CENTER)
+        self.accumulated_score_label.place(relx=0.57, rely=0.25, anchor=CENTER)
+        self.descirption_label.place(relx=0.5, rely=0.4, anchor=CENTER)
+        self.guess_big_button.place(relx=0.3, rely=0.7, anchor=CENTER)
+        self.guess_small_button.place(relx=0.7, rely=0.7, anchor=CENTER)
 
     def generate_num(self):
         point = random.randrange(1, 100)
         print(point)
         return point
 
-    def clickBtnBig(self):
-        self.times -= 1
-        self.times_str.set(self.times)
-        result = self.generate_num()
-        self.num_str.set(result)
-        isBig = 51 <= result <= 100
-        if self.times == 0:
-            if self.scores >= 3:
-                end = messagebox.showinfo("遊戲結束", "猜對%d次，闖關成功" % self.scores)
-                if end == "ok":
-                    global game1_pass
-                    game1_pass = True
-                    sleep(1)
-                    self.controller.show_frame(DoorPage)
-            else:
-                end = messagebox.showinfo("遊戲結束", "猜對%d次，闖關失敗" % self.scores)
-                if end == "ok":
-                    sleep(1)
-                    self.controller.show_frame(DoorPage)
+    def click_guess_big_button(self):
+        global game1_pass
+
+        self.number = self.generate_num()
+        isBig = 51 <= self.number <= 100
+
+        self.remaining_times_int -= 1
+        self.remaining_times_str.set(self.remaining_times_int)
 
         if isBig:
-            self.scores += 1
-            self.scores_str.set(self.scores)
-            self.result_str.set('恭喜，你猜對了')
-        else:
-            self.result_str.set('很遺憾，你猜錯了')
+            self.accumulated_score_int += 1
+            self.accumulated_score_str.set(self.accumulated_score_int)
 
-    def clickBtnSmall(self):
-        self.times -= 1
-        self.times_str.set(self.times)
-        self.result = self.generate_num()
-        self.num_str.set(self.result)
-        isSmall = 1 <= self.result <= 50
-        if self.times == 0:
-            if self.scores >= 3:
-                end = messagebox.showinfo("遊戲結束", "猜對%d次，闖關成功" % self.scores)
-                if end == "ok":
-                    global game1_pass
-                    game1_pass = True
-                    sleep(1)
-                    self.controller.show_frame(DoorPage)
+        if self.remaining_times_int == 0:
+            if self.accumulated_score_int >= 3:
+                text = "系統產生的數字為" + str(self.number) + "，您猜大，遊戲結束，猜對" + str(self.accumulated_score_int) + "次，闖關成功"
+                game1_pass = True
             else:
-                end = messagebox.showinfo("遊戲結束", "猜對%d次，闖關失敗" % self.scores)
-                print(end)
-                if end == "ok":
-                    sleep(1)
-                    self.controller.show_frame(DoorPage)
+                text = "系統產生的數字為" + str(self.number) + "，您猜大，遊戲結束，猜對" + str(self.accumulated_score_int) + "次，闖關失敗"
+            print(text)
+            self.descirption_str.set(text)
+            self.prepare_to_back_to_door()
+        else:
+            if isBig:
+                text = '系統產生的數字為%d，您猜大，恭喜猜對了' % self.number
+            else:
+                text = '系統產生的數字為%d，您猜大，很遺憾，猜錯了' % self.number
+            self.accumulated_score_str.set(self.accumulated_score_int)
+            self.remaining_times_str.set(self.remaining_times_int)
+            self.descirption_str.set(text)
+
+    def click_guess_small_button(self):
+        global game1_pass
+        self.number = self.generate_num()
+        isSmall = 1 <= self.number <= 50
+        self.remaining_times_int -= 1
+        self.remaining_times_str.set(self.remaining_times_int)
 
         if isSmall:
-            self.scores += 1
-            self.scores_str.set(self.scores)
-            self.result_str.set('恭喜，你猜對了')
+            self.accumulated_score_int += 1
+            self.accumulated_score_str.set(self.accumulated_score_int)
+
+        if self.remaining_times_int == 0:
+            if self.accumulated_score_int >= 3:
+                text = "系統產生的數字為" + str(self.number) + "，您猜小，遊戲結束，猜對" + str(self.accumulated_score_int) + "次，闖關成功"
+                self.accumulated_score_str.set(self.accumulated_score_int)
+                self.remaining_times_str.set(self.remaining_times_int)
+                game1_pass = True
+            else:
+                text = "系統產生的數字為" + str(self.number) + "，您猜小，遊戲結束，猜對" + str(self.accumulated_score_int) + "次，闖關失敗"
+                self.accumulated_score_str.set(self.accumulated_score_int)
+                self.remaining_times_str.set(self.remaining_times_int)
+            self.descirption_str.set(text)
+            self.prepare_to_back_to_door()
         else:
-            self.result_str.set('很遺憾，你猜錯了')
+            if isSmall:
+                text = '系統產生的數字為%d，您猜小，恭喜猜對了' % self.number
+            else:
+                text = '系統產生的數字為%d，您猜小，很遺憾，猜錯了' % self.number
+            self.accumulated_score_str.set(self.accumulated_score_int)
+            self.remaining_times_str.set(self.remaining_times_int)
+            self.descirption_str.set(text)
+
+    def prepare_to_back_to_door(self):
+        self.guess_big_button.place_forget()
+        self.guess_small_button.place_forget()
+        self.back_to_door_page_button.place(relx=0.5, rely=0.7, anchor=CENTER)
+
+    def back_to_door(self):
+        self.controller.show_frame(DoorPage)
 
 
 class Game2IntroPage(Frame):
-
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600,height=400)
         self.controller = controller
         self.createWidgets()
-
     def createWidgets(self):
         label1 = Label(self, text="歡迎來到終極密碼遊戲", font=('微軟正黑體', 30), bg='black', fg='white')
         label2 = Label(self, text="規則說明:", font=('微軟正黑體', 24))
         label3 = Label(self, text="系統會產生一個數字(1-100)，", font=('微軟正黑體', 18))
         label4 = Label(self, text="要去猜中此數字的數值，", font=('微軟正黑體', 18))
         label5 = Label(self, text="猜錯會依據猜的數字給予提示，", font=('微軟正黑體', 18))
-        label6 = Label(self, text="共有五次機會", font=('微軟正黑體', 18))
-        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game2MainPage), font=('微軟正黑體', 24))
+        label6 = Label(self, text="共有6次機會", font=('微軟正黑體', 18))
+        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game2MainPage), bg='black', foreground='white', font=('微軟正黑體', 24))
 
         label1.pack(side="top", fill="both", expand=True)
         label2.pack(side="top", fill="both", expand=True)
@@ -303,7 +335,7 @@ class Game2MainPage(Frame):
         self.display_count = 0
         self.lower_bound = 1
         self.upper_bound = 100
-        self.guess_count_limit = 5
+        self.guess_count_limit = 6
         self.guess_count = 0
         self.answer = randint(self.lower_bound, self.upper_bound)
         print('Game2 answer:', self.answer)
@@ -317,7 +349,7 @@ class Game2MainPage(Frame):
 
         self.txt = Text(self, height=1, width=10)
         self.txt.bind('<Return>', self.click_enter_keyboard)
-        self.btn = Button(self, height=2, width=15, text="Enter", command=self.click_enter_btn)
+        self.btn = Button(self, height=2, width=15, text="Enter", command=self.click_enter_btn, bg='black', foreground='white')
 
         self.lb.place(relx=0.5, rely=0.35, anchor=CENTER)
         self.txt.place(relx=0.5, rely=0.5, anchor=CENTER)
@@ -342,6 +374,8 @@ class Game2MainPage(Frame):
             self.update_label_text(self.lb, init_text)
             self.display_count += 1
 
+            self.btn['text'] = 'Enter'
+            self.btn[' command'] = self.click_enter_btn
 
     # 在文字輸入框 , 鍵盤按下Enter按鈕後會觸發的事件
     def click_enter_keyboard(self, event):
@@ -363,14 +397,14 @@ class Game2MainPage(Frame):
     # 滑鼠按下Enter按鈕後會觸發的事件
     def click_enter_btn(self):
         # 讀取文字輸入框的文字
-        inp = self.txt.get("1.0", 'end-1c')
+        input = self.txt.get("1.0", 'end-1c')
         # 去除空白 換行 字元
-        inp = inp.strip()
+        input = input.strip()
 
         self.clear_text_text(self.txt)
 
         try:
-            guess_number = int(inp)
+            guess_number = int(input)
         except ValueError:
             text = u'格式錯誤，請輸入數字'
             self.update_label_text(self.lb, text)
@@ -386,10 +420,10 @@ class Game2MainPage(Frame):
 
         if guess_number == self.answer:
             global game2_pass
-            text = u'恭喜猜對！門已解鎖'
+            text = u"恭喜闖關成功，您猜了%d次" % self.guess_count
             self.update_label_text(self.lb, text)
-            messageText = "恭喜闖關成功，您猜了%d次" % self.guess_count
-            self.end_game(messageText, True)
+            game2_pass = True
+            self.prepare_to_back_to_door()
 
         elif guess_number < self.answer:
             self.lower_bound = guess_number + 1
@@ -399,11 +433,9 @@ class Game2MainPage(Frame):
                        + u'答案介於 ' + str(self.lower_bound) + '-' + str(self.upper_bound) + u'之間'
                 self.update_label_text(self.lb, text)
             else:
-                text = u'您最後一次回答為:' + str(guess_number) + u' 正確答案為:' + str(self.answer)
+                text = u'您最後一次回答為:' + str(guess_number) + u' 正確答案為:' + str(self.answer) + u'闖關失敗'
                 self.update_label_text(self.lb, text)
-                messageText = text
-                self.end_game(messageText, False)
-
+                self.prepare_to_back_to_door()
         else:
             self.upper_bound = guess_number - 1
 
@@ -412,24 +444,17 @@ class Game2MainPage(Frame):
                        + u'答案介於 ' + str(self.lower_bound) + '-' + str(self.upper_bound) + u'之間'
                 self.update_label_text(self.lb, text)
             else:
-                text = u'您最後一次回答為:' + str(guess_number) + u' 正確答案為:' + str(self.answer)
+                text = u'您最後一次回答為:' + str(guess_number) + u' 正確答案為:' + str(self.answer) + u'闖關失敗'
                 self.update_label_text(self.lb, text)
-                messageText = text
-                self.end_game(messageText, False)
+                self.prepare_to_back_to_door()
 
-    def end_game(self, messageText, isSuccess):
-        global game2_pass
-        self.txt.grid_remove()
-        if isSuccess:
-            end = messagebox.showinfo(u'闖關成功', messageText)
-        else:
-            end = messagebox.showinfo(u'闖關失敗', messageText)
-        if end == "ok":
-            if isSuccess:
-                game2_pass = True
-            sleep(1)
-            self.controller.show_frame(DoorPage)
-            self.bg_pic.stop()
+    def prepare_to_back_to_door(self):
+        self.btn['text'] = u'回到主畫面'
+        self.btn['command'] = self.back_to_door
+
+    def back_to_door(self):
+        self.controller.show_frame(DoorPage)
+        #         self.bg_pic.stop()
 
 
 class Game3IntroPage(Frame):
@@ -443,15 +468,23 @@ class Game3IntroPage(Frame):
         label1 = Label(self, text="歡迎來到1A2B遊戲", font=('微軟正黑體', 30), bg='black', fg='white')
         label2 = Label(self, text="規則說明:", font=('微軟正黑體', 24))
         label3 = Label(self, text="系統會產生一個四位數的數字，", font=('微軟正黑體', 18))
-        label4 = Label(self, text="要去猜此數字，", font=('微軟正黑體', 18))
-        label5 = Label(self, text="如果猜錯，會給予提示", font=('微軟正黑體', 18))
-        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game3MainPage), font=('微軟正黑體', 24))
+        label4 = Label(self, text="要去猜此四位數字，", font=('微軟正黑體', 18))
+        label5 = Label(self, text="如果猜錯，會給予提示，", font=('微軟正黑體', 18))
+        label6 = Label(self, text="1A代表有一個位數的數字的值與位置皆是對的", font=('微軟正黑體', 18))
+        label7 = Label(self, text="1B代表有一個位數的數字的值是對的，但位置是錯的", font=('微軟正黑體', 18))
+        label8 = Label(self, text="2B代表有2個位數的數字的值是對的，但位置是錯的", font=('微軟正黑體', 18))
+        label9 = Label(self, text="共有10次機會", font=('微軟正黑體', 18))
+        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game3MainPage), bg='black', foreground='white', font=('微軟正黑體', 24))
 
-        label1.pack(side="top", fill="both", expand = True)
-        label2.pack(side="top", fill="both", expand = True)
-        label3.pack(side="top", fill="both", expand = True)
-        label4.pack(side="top", fill="both", expand = True)
-        label5.pack(side="top", fill="both", expand = True)
+        label1.pack(side="top", fill="both", expand=True)
+        label2.pack(side="top", fill="both", expand=True)
+        label3.pack(side="top", fill="both", expand=True)
+        label4.pack(side="top", fill="both", expand=True)
+        label5.pack(side="top", fill="both", expand=True)
+        label6.pack(side="top", fill="both", expand=True)
+        label7.pack(side="top", fill="both", expand=True)
+        label8.pack(side="top", fill="both", expand=True)
+        label9.pack(side="top", fill="both", expand=True)
         btn1.pack()
 
 
@@ -596,7 +629,7 @@ class Game3MainPage(Frame):
         self.btn_0.grid(row=6, column=0, columnspan=2, sticky="w")
         self.btn_back.grid(row=6, column=2, sticky="e")
 
-        self.answers = Text(self, width=20, height=12, bg='black', foreground='yellow', font=('arial', 15))
+        self.answers = Text(self, width=20, height=12, bg='black', foreground='white', font=('arial', 15))
         self.answers.grid(row=3, column=5, rowspan=4, pady=4, padx=10)
 
         self.label.grid(row=0, column=0, columnspan=3, rowspan=3)
@@ -616,7 +649,7 @@ class EndPage(Frame):
         self.bg_pic = AnimatedGif(self, 'ending.gif', 0.04)
         self.bg_pic.place(x=0, y=0, relwidth=1, relheight=1)
         self.bg_pic.start()
-        self.quit_but = Button(self, text="QUIT", command=self.quit, height=2, width=10, bg='black', foreground='yellow')  # Button to quit
+        self.quit_but = Button(self, text="QUIT", command=self.quit, height=2, width=10, bg='black', foreground='white')  # Button to quit
         self.quit_but.place(relx=0.5, rely=0.9, anchor=CENTER)
 
 
