@@ -516,14 +516,18 @@ class Game3MainPage(Frame):
         return rand
 
     def new_game(self):
+        global count
         print("Game3MainPage - new_game")
         self.label.config(text='')
         self.resultLabel.config(text="")
         self.answers.delete(1.0, END)
         self.answer = self.n_digit_num(self.nOfDigits)
         print('Game3MainPage answer:', self.answer)
+        self.count = 10
+        self.chanceLabel.config(text=str(self.count) + " chances left")
 
     def check_guess(self):
+        global count
         self.playerGuess = self.label.cget("text")
 
         if len(self.playerGuess) == self.nOfDigits:
