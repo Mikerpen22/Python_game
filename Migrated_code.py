@@ -12,8 +12,12 @@ game2_pass = False
 game3_pass = False
 
 pygame.init()
+pygame.mixer.pre_init(44100, 16, 2, 4096)  # frequency, size, channels, buffersize
 pygame.mixer.music.load('Fantasy_Game_Background_Looping.mp3')  # Loading File Into Mixer
 pygame.mixer.music.play(loops=-1)  # keep playing bgm
+
+door_sound = pygame.mixer.Sound('creaky_door.wav')
+victory_sound = pygame.mixer.Sound('victory.wav')
 
 
 class TreasureHunter(Tk):
@@ -45,6 +49,8 @@ class TreasureHunter(Tk):
 
         if container == DoorPage:
             if game1_pass is True and game2_pass is True and game3_pass is True:  # 如果三個遊戲都已通關
+                pygame.mixer.music.stop()
+                victory_sound.play()
                 self.show_frame(EndPage)
             else:
                 if game1_pass is True:
@@ -57,6 +63,11 @@ class TreasureHunter(Tk):
         elif container == Game1MainPage or container == Game2MainPage:
             frame.reset_if_needed()  # 將一些變數初始化，比如：猜的次數
             frame.tkraise()
+
+        elif container == Game1IntroPage or container == Game2IntroPage or container == Game3IntroPage:
+            door_sound.play()
+            frame.tkraise()
+
         else:
             frame.tkraise()
 
