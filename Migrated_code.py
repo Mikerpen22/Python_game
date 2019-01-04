@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from time import sleep
 import pygame
 import random
-from random import randint
+from random import randint 
 
 game1_pass = False
 game2_pass = False
