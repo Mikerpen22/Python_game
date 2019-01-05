@@ -538,6 +538,7 @@ class Game3MainPage(Frame):
             self.label.config(text="")
 
         if self.count == 0:
+            self.new_game()
             self.chance_label.config(text="Try Again!")
             self.count = 10
 
