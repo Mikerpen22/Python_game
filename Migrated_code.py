@@ -59,7 +59,7 @@ class TreasureHunter(Tk):
                 if game3_pass is True:
                     frame.unlock_door('right')
                 frame.tkraise()  # 將此frame移到最前面, 讓此frame顯示出來
-        elif container == Game1MainPage or container == Game2MainPage:
+        elif container == Game1MainPage or container == Game3MainPage:  # 猜大小遊戲 與 終極密碼遊戲的遊戲遊玩頁面
             frame.reset_if_needed()  # 將一些變數初始化，比如：猜的次數
             frame.tkraise()  # 將此frame移到最前面, 讓此frame顯示出來
 
@@ -317,7 +317,7 @@ class Game1MainPage(Frame):
 
 
 # 終極密碼的遊戲介紹頁面
-class Game2IntroPage(Frame):
+class Game3IntroPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600,height=400)
         self.controller = controller
@@ -330,7 +330,7 @@ class Game2IntroPage(Frame):
         label4 = Label(self, text="要去猜中此數字的數值，", font=('微軟正黑體', 18))
         label5 = Label(self, text="猜錯會依據猜的數字給予提示，", font=('微軟正黑體', 18))
         label6 = Label(self, text="共有6次機會", font=('微軟正黑體', 18))
-        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game2MainPage), bg='black', foreground='white', font=('微軟正黑體', 24))
+        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game3MainPage), bg='black', foreground='white', font=('微軟正黑體', 24))
 
         label1.pack(side="top", fill="both", expand=True)
         label2.pack(side="top", fill="both", expand=True)
@@ -343,7 +343,7 @@ class Game2IntroPage(Frame):
 
 
 # 終極密碼的遊戲頁面
-class Game2MainPage(Frame):
+class Game3MainPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600, height=400)
         self.controller = controller
@@ -353,7 +353,7 @@ class Game2MainPage(Frame):
         self.guess_count_limit = 6
         self.guess_count = 0
         self.answer = randint(self.lower_bound, self.upper_bound)
-        print('Game2 answer:', self.answer)
+        print(u'real answer of 終極密碼:', self.answer)
 
         # 設定背景動畫
         self.bg_gif = AnimatedGif(self, 'green_1.gif', 0.20)
@@ -428,10 +428,10 @@ class Game2MainPage(Frame):
         self.guess_count += 1
 
         if guess_number == self.answer:  # 若回答正確
-            global game2_pass
+            global game3_pass
             text = u"恭喜闖關成功，您猜了%d次" % self.guess_count
             self.update_text_of_label(self.label, text)
-            game2_pass = True
+            game3_pass = True
             self.prepare_to_back_to_door()
         else:   # 若使用者回答錯誤
             #  調整上下界
@@ -458,11 +458,10 @@ class Game2MainPage(Frame):
     # 回到三扇門的頁面
     def back_to_door(self):
         self.controller.show_frame(DoorPage)
-        #         self.bg_pic.stop()
 
 
 # 1A2B的遊戲介紹頁面
-class Game3IntroPage(Frame):
+class Game2IntroPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent,width=600, height=400)
         self.controller = controller
@@ -479,7 +478,7 @@ class Game3IntroPage(Frame):
         label7 = Label(self, text="1B代表有一個位數的數字的值是對的，但位置是錯的；", font=('微軟正黑體', 18))
         label8 = Label(self, text="2B代表有2個位數的數字的值是對的，但位置是錯的", font=('微軟正黑體', 18))
         label9 = Label(self, text="共有10次機會", font=('微軟正黑體', 18))
-        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game3MainPage), bg='black', foreground='white', font=('微軟正黑體', 24))
+        btn1 = Button(self, text="遊戲開始", height=1, width=8, command=lambda: self.controller.show_frame(Game2MainPage), bg='black', foreground='white', font=('微軟正黑體', 24))
 
         # 將元件放入頁面中
         label1.pack(side="top", fill="both", expand=True)
@@ -495,10 +494,9 @@ class Game3IntroPage(Frame):
 
 
 # 1A2B的遊戲頁面
-class Game3MainPage(Frame):
+class Game2MainPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600, height=400)
-        print("Game3MainPage - init")
         self.controller = controller
         self.answer = ''
         self.player_guess = ''
@@ -512,12 +510,11 @@ class Game3MainPage(Frame):
         return rand
 
     def new_game(self):
-        print("Game3MainPage - new_game")
         self.label.config(text='')
         self.result_label.config(text="")
         self.answers.delete(1.0, END)
         self.answer = self.n_digit_num(self.num_digits)
-        print('Game3MainPage answer:', self.answer)
+        print('real answer of 1A2B:', self.answer)
         self.count = 10
         self.chance_label.config(text=str(self.count) + " chances left")
 
@@ -561,8 +558,8 @@ class Game3MainPage(Frame):
 
     def show_result(self, a, b):
         if a == self.num_digits:
-            global game3_pass
-            game3_pass = True
+            global game2_pass
+            game2_pass = True
             self.prepare_to_back_to_door()
         else:
             result = str(a) + "A" + str(b) + "B"
@@ -646,7 +643,7 @@ class Game3MainPage(Frame):
         self.back_main.grid(row=5, column=4)
 
         self.new_game()
-        # 將頁面變成要讓使用者按下回到主畫面的狀態
+
 
     def prepare_to_back_to_door(self):
         result = u"闖關成功"
