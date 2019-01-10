@@ -537,19 +537,24 @@ class Game2MainPage(Frame):
             self.count = self.count - 1
             a = self.cal_a(self.player_guess)
             b = self.cal_b(self.player_guess)
-            self.show_result(a, b)
-            self.label.config(text="")
-            self.answers.insert(INSERT, self.player_guess + "   " + str(a) + "A" + str(b) + "B" + "\n")
-            self.chance_label.config(text=str(self.count)+" chances left")
-
-        else:
+            if self.show_result(a, b) == True:
+                self.chance_label.config(text=str(self.count) + " chances left")
+                self.show_result(a, b)
+            elif self.count == 0:
+                self.new_game()
+                self.chance_label.config(text="Try Again!")
+                self.count = 10
+            else:
+                result = str(a) + "A" + str(b) + "B"
+                self.result_label.config(text=result)
+                self.label.config(text="")
+                self.answers.insert(INSERT, self.player_guess + "   " + str(a) + "A" + str(b) + "B" + "\n")
+                self.chance_label.config(text=str(self.count)+" chances left")
+        elif len(self.player_guess) != self.num_digits:
             messagebox.showinfo("提醒", "位數要為" + str(self.num_digits))
             self.label.config(text="")
 
-        if self.count == 0:
-            self.new_game()
-            self.chance_label.config(text="Try Again!")
-            self.count = 10
+
 
     def cal_a(self, guess):
         a = 0
@@ -573,9 +578,11 @@ class Game2MainPage(Frame):
             global game2_pass
             game2_pass = True
             self.prepare_to_back_to_door()
+            return True
         else:
             result = str(a) + "A" + str(b) + "B"
             self.result_label.config(text=result)
+            return False
 
     def click_btn1(self):
         self.label.configure(text=self.label.cget("text") + "1")
