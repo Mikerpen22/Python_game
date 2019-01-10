@@ -518,10 +518,23 @@ class Game2MainPage(Frame):
         self.count = 10
         self.chance_label.config(text=str(self.count) + " chances left")
 
+    def FindDuplicates(self,in_list):
+    unique = set(in_list)
+    for each in unique:
+        count = in_list.count(each)
+        if count > 1:
+            return True
+    return False    
+
     def check_guess(self):
         self.player_guess = self.label.cget("text")
+        lst = list(map(int, str(self.player_guess)))
 
-        if len(self.player_guess) == self.num_digits:
+        if self.FindDuplicates(lst) == True:
+            messagebox.showinfo("提醒", "請輸入不重複數字！")
+            self.label.config(text="")
+            
+        elif len(self.player_guess) == self.num_digits:
             self.count = self.count - 1
             a = self.cal_a(self.player_guess)
             b = self.cal_b(self.player_guess)
