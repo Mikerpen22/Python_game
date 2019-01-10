@@ -75,7 +75,7 @@ class TreasureHunter(Tk):
 class BeginningPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600, height=400)
-        image = Image.open('beginning_with_description.png')
+        image = Image.open('C:\\Users\\carl_dis2003\\Desktop\\大學\\大三上\\python\\檔案\\beginning_with_description.png')
         image = image.resize((860, 620), Image.ANTIALIAS)
         self.bg_load = ImageTk.PhotoImage(image)
         self.bg_label = Label(self, image=self.bg_load)
@@ -519,12 +519,12 @@ class Game2MainPage(Frame):
         self.chance_label.config(text=str(self.count) + " chances left")
 
     def FindDuplicates(self,in_list):
-    unique = set(in_list)
-    for each in unique:
-        count = in_list.count(each)
-        if count > 1:
-            return True
-    return False    
+        unique = set(in_list)
+        for each in unique:
+            count = in_list.count(each)
+            if count > 1:
+                return True
+        return False
 
     def check_guess(self):
         self.player_guess = self.label.cget("text")
@@ -533,7 +533,6 @@ class Game2MainPage(Frame):
         if self.FindDuplicates(lst) == True:
             messagebox.showinfo("提醒", "請輸入不重複數字！")
             self.label.config(text="")
-            
         elif len(self.player_guess) == self.num_digits:
             self.count = self.count - 1
             a = self.cal_a(self.player_guess)
