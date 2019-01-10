@@ -75,7 +75,7 @@ class TreasureHunter(Tk):
 class BeginningPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600, height=400)
-        image = Image.open('C:\\Users\\carl_dis2003\\Desktop\\大學\\大三上\\python\\檔案\\beginning_with_description.png')
+        image = Image.open('beginning_with_description.png')
         image = image.resize((860, 620), Image.ANTIALIAS)
         self.bg_load = ImageTk.PhotoImage(image)
         self.bg_label = Label(self, image=self.bg_load)
