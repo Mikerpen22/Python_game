@@ -54,10 +54,10 @@ class TreasureHunter(Tk):
             else:
                 if game1_pass is True:  # 代表遊戲一已通關
                     frame.unlock_door('left')  # 將左邊的門打開
-                if game2_pass is True:
-                    frame.unlock_door('mid')
-                if game3_pass is True:
+                if game2_pass is True: # 1A2B已通關
                     frame.unlock_door('right')
+                if game3_pass is True: # 終極密碼已通關
+                    frame.unlock_door('mid')
                 frame.tkraise()  # 將此frame移到最前面, 讓此frame顯示出來
         elif container == Game1MainPage or container == Game3MainPage:  # 猜大小遊戲 與 終極密碼遊戲的遊戲遊玩頁面
             frame.reset_if_needed()  # 將一些變數初始化，比如：猜的次數
@@ -100,7 +100,7 @@ class DoorPage(Frame):
         door_button_width = locked_image_width    # 門的按鈕的寬度
         door_button_height = locked_image_height
 
-        # 載入image與resize
+        # 載入image與resize ,  圖片變數名稱的編號在介面上是由左到右編號
         self.image1 = Image.open('door_left_locked.png')
         self.image1 = self.image1.resize((locked_image_width, locked_image_height), Image.ANTIALIAS)
         self.image2 = Image.open('door_mid_locked.png')
@@ -122,10 +122,10 @@ class DoorPage(Frame):
         self.bg1_unlock_load = ImageTk.PhotoImage(self.image1_unlock)
         self.bg2_unlock_load = ImageTk.PhotoImage(self.image2_unlock)
         self.bg3_unlock_load = ImageTk.PhotoImage(self.image3_unlock)
-        # 初始化相關元件
+        # 初始化相關元件,  按鈕變數名稱的編號在介面上是由左到右編號
         self.bg1 = Button(self, width=door_button_width, height=door_button_height, image=self.bg1_load, command=lambda: controller.show_frame(Game1IntroPage), borderwidth=0, highlightthickness=0)
-        self.bg2 = Button(self, width=door_button_width, height=door_button_height, image=self.bg2_load, command=lambda: controller.show_frame(Game2IntroPage), borderwidth=0, highlightthickness=0)
-        self.bg3 = Button(self, width=door_button_width, height=door_button_height, image=self.bg3_load, command=lambda: controller.show_frame(Game3IntroPage), borderwidth=0, highlightthickness=0)
+        self.bg2 = Button(self, width=door_button_width, height=door_button_height, image=self.bg2_load, command=lambda: controller.show_frame(Game3IntroPage), borderwidth=0, highlightthickness=0)
+        self.bg3 = Button(self, width=door_button_width, height=door_button_height, image=self.bg3_load, command=lambda: controller.show_frame(Game2IntroPage), borderwidth=0, highlightthickness=0)
         # 將元件放入頁面中
         self.bg2.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.bg1.pack(side=LEFT)
@@ -142,6 +142,7 @@ class DoorPage(Frame):
 
 
 # 猜大小的遊戲介紹頁面
+# Game的編號與門圖片上的羅馬數字一致 ，如Game1對應的門上的羅馬數字就會是1
 class Game1IntroPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, width=600, height=600)
